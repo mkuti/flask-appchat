@@ -6,25 +6,26 @@ messages = []
 
 
 def add_messages(username, message):
-    messages.append("{o}: {1}".format(username, message))
+    messages.append("{}: {}".format(username, message))
 
 
-app.route("/")
+@app.route("/")
 def index():
-    ''' Main page with instructions '''
-    return "To send a message use /USERNAME/MESSAGE"
+    """ Main page with instructions """
+    return "To send a message use: /USERNAME/MESSAGE"
 
 
-app.route("/<username>")
+@app.route("/<username>")
 def user(username):
-    ''' Display chat messages '''
-    return "Welcome, {}".format(username)
+    return "Welcome {0}".format(username)
 
 
-app.route("/<username>/<message")
+@app.route("/<username>/<message>")
 def send_message(username, message):
-    """Create a new message and redirect back to the chat page"""
-    return "{o}: {1}".format(username, message)
+    return "{0}: {1}".format(username, message)
 
 
-app.run(host=os.getenv("IP"), port=int(os.getenv("PORT")), debug=True)
+if __name__ == '__main__':
+    app.run(host=os.environ.get('IP'),
+    port=int(os.environ.get('PORT')),
+    debug=True)
