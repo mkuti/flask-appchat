@@ -1,12 +1,18 @@
 import os
-from flask import Flask
+from flask import Flask, redirect
 
 app = Flask(__name__)
 messages = []
 
 
 def add_messages(username, message):
-    messages.append("{}: {}".format(username, message))
+    """Add messages to the `messages` list"""
+    messages.append("{}: {}".format(username.capitalize(), message))
+
+
+def get_all_messages():
+    """Get all of the messages and separate them with a `br`"""
+    return "<br>".join(messages)
 
 
 @app.route("/")
@@ -17,15 +23,13 @@ def index():
 
 @app.route("/<username>")
 def user(username):
-    return "Welcome {0}".format(username)
+    return "<h1>Welcome {0} </h1>{1}".format(username.capitalize(), get_all_messages())
 
 
 @app.route("/<username>/<message>")
 def send_message(username, message):
-    return "{0}: {1}".format(username, message)
+    add_messages(username, message)
+    return redirect("/" + username)
 
 
-if __name__ == '__main__':
-    app.run(host=os.environ.get('IP'),
-    port=int(os.environ.get('PORT')),
-    debug=True)
+app.run(host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "5000")), debug=True)
