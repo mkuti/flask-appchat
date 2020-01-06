@@ -25,6 +25,9 @@ def index():
     if request.method == "POST":
         session["username"] = request.form["username"] #username name filled in the form
 
+    if "username" in session:
+        return redirect(session["username"]) #redirect to username route and because data is stored, home page will stay as logged in until we close browser
+
     return render_template("index.html")
 
 
